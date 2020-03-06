@@ -77,7 +77,17 @@ trap(struct trapframe *tf)
             cpuid(), tf->cs, tf->eip);
     lapiceoi();
     break;
-
+  case T_PGFLT:
+  	 //uint x = (myproc()->szStack + 1) * PGSIZE;
+  	 if(rcr2() > KERNBASE - ((myproc()->szStack + 1) * PGSIZE)){
+  	  if(allocuvm(myproc()->pgdir, KERNBASE - ((myproc()->szStack + 1) * PGSIZE) , KERNBASE - ((myproc()->szStack + 1) * PGSIZE)+ 2) == 0){   
+  	  	cprintf("case T_PGFLT from trap.c: allocuvm failed. Number of current allocated pages: %d \n", myproc()->szStack);
+		exit();
+	  }
+	  myproc()->szStack++; 
+	  cprintf("case T_PGFLT from trap.c: allocuvm succeeded. Number of pages allocated: %d\n", myproc()->szStack);
+	}
+	break; 		   
   //PAGEBREAK: 13
   default:
     if(myproc() == 0 || (tf->cs&3) == 0){

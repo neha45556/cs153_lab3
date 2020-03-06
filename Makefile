@@ -28,6 +28,7 @@ OBJS = \
 	vectors.o\
 	vm.o\
 	shm.o\
+	
 
 # Cross-compiling (e.g., on Mac OS X)
 # TOOLPREFIX = i386-jos-elf
@@ -177,6 +178,7 @@ UPROGS=\
 	_zombie\
 	_shm_cnt\
 	_null\
+	_lab3\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
